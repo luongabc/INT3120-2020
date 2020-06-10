@@ -4,6 +4,8 @@ import { StyleSheet,Text, View,SafeAreaView,ScrollView } from 'react-native';
 
 import { Container, Header, Left, Body, Right, Button, Icon, Title, Content, Grid, Col, Row } from 'native-base';
 import { TouchableHighlight } from 'react-native-gesture-handler';
+import HeaderApp from '../component/HeaderApp';
+
 export default class Practice extends Component{
     constructor(props){
         super(props);
@@ -14,18 +16,8 @@ export default class Practice extends Component{
     
     render(){
         return(
-              
             <View >
-                <Header style={{}} >
-                    <Left>
-                        <Button onPress={() => this.props.navigation.pop()}>
-                            <Icon name='menu' ></Icon>
-                        </Button>
-                    </Left>
-                    <Body>
-                        <Title>Hướng dẫn bài thi sa hình</Title>
-                    </Body>
-                </Header>
+                {HeaderApp(this.props.navigation,this.props.route.params.namePage)}
                 <ScrollView style={[styles.scrollView,{marginBottom:60}]}>
                     {this.showContent(this.state.data)}
                 </ScrollView>

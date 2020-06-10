@@ -2,7 +2,7 @@
 import React, { Component } from "react";
 import { View, Text, StyleSheet } from 'react-native';
 import { Header, Body, Left, Button, Icon, Title, Content, Container } from 'native-base';
-import { WebView } from 'react-native-webview';
+
 export default class Tips extends Component {
     constructor(props) {
         super(props);

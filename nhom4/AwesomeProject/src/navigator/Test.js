@@ -5,11 +5,13 @@ import {
 } from 'react-native';
 import {
   Container, Header, Tab, Tabs,
-  ScrollableTab, Button, Body,
-  Icon, Title, Right, Content,
+  ScrollableTab, Button,  Right, Content,Icon,Title,Body,
   ListItem, CheckBox
 } from 'native-base';
 import { FirebaseApp } from '../component/FirebaseConfig';
+import ComponentCommon from '../component';
+import HeaderApp from '../component/HeaderApp';
+
 export default class Test extends Component {
   constructor(props) {
     super(props);
@@ -20,57 +22,55 @@ export default class Test extends Component {
   }
   componentDidMount() {
     var listQuestion = this.props.route.params.data.Question.split(" ");
-    for (var i = 0; i < listQuestion.length; i++) {
-      FirebaseApp.database().ref('Question').child(listQuestion[i]).once('value').then(snapshot => {
-        this.setState({ data: [...this.state.data, snapshot.val()] });
-      })
+    if(listQuestion.length!=this.state.data.length){
+      for (var i = 0; i < listQuestion.length; i++) {
+        FirebaseApp.database().ref('Question').child(listQuestion[i]).once('value').then(snapshot => {
+          this.setState({ data: [...this.state.data, snapshot.val()] });
+        });
+      }
     }
-    this.setState({loading:false});
+    let myInterval =setInterval(() => {if(listQuestion.length==this.state.data.length){
+      this.setState({loading:false});
+      clearInterval(myInterval);
+      }; }, 1000);
   }
   render() {
+    const { namePage } = this.props.route.params;
+    const { navigation } = this.props;
     if(this.state.loading){
       return(
-        <View></View>
+        <Container>
+          {HeaderApp(navigation,this.props.route.params.namePage)}
+        </Container>
       )
     }
-      const { namePage } = this.props.route.params;
-      const { navigation } = this.props;
+    
       return (
         <Container>
-        <Header style={{}}>
-          <Button onPress={() => { navigation.goBack() }
-          }>
-            <Icon name="menu" ></Icon>
-          </Button>
-          <Body style={{ paddingLeft: 20 }}>
-            <Title>{namePage}</Title>
-          </Body>
-          <Right>
-            <Button onPress={() => {
-              navigation.pop();
-              navigation.navigate("Result", { "namePage": "Kết quả thi", "data": this.state.data });
-            }}>
-              <Text style={{ color: '#fff' }}> Nộp </Text>
-            </Button>
-          </Right>
-        </Header>
+        {HeaderApp(navigation,namePage)}
         <Content style={{ margin: 1 }}>
           <Header style={{ height: 30 }}>
             <Content>
-              <CountDown startM={20} navigation={navigation} data={this.state.data} />
+              <ComponentCommon.CountDown startM={20} navigation={navigation} data={this.state.data} />
             </Content>
+            <Right>
+            <Button style={{ backgroundColor:'green'}}onPress={() => {
+              navigation.pop();
+              navigation.navigate("Result", { "namePage": "Kết quả thi", "data": this.state.data });
+            }}>
+              <Text style={{ color:'#fff'}} > Nộp bài</Text>
+            </Button>
+          </Right>
           </Header>
-
           <Tabs renderTabBar={() => <ScrollableTab />}>
             {this.state.data.map((question, i) => {
               if(question != null){
-              let count = i + 1;
-              return (
-                <Tab heading={"Câu " + count} key={i}>
-                  {this.ShowTabContent(question)}
-                  <Tab />
-                </Tab>)
-              }
+                let count = i + 1;
+                return (
+                  <Tab  heading={"Câu " + count} key={i}>
+                    {this.ShowTabContent(question)}
+                  </Tab>)
+                }
             })}
           </Tabs>
         </Content>
@@ -92,34 +92,6 @@ export default class Test extends Component {
       </View>
     );
   }
-}
-
-//input: startM (minute)
-const CountDown = (props) => {
-  const [m, setM] = useState(props.startM);
-  const [s, setS] = useState(0);
-  useEffect(() => {
-    let mounted = true;
-    if (m === 0 && s === 0) {
-      props.navigation.pop();
-      props.navigation.navigate("Result", { "namePage": "Kết quả thi", "data": props.data });
-    }
-    setTimeout(() => {
-      if (mounted) {
-        if (s == 0) {
-          setS(59);
-          setM(m - 1);
-        }
-        else {
-          setS(s - 1);
-        }
-      }
-    }, 1000);
-    return () => mounted = false;
-  })
-  return (
-    <Text style={{ color: '#fff', fontSize: 18 }}>Thời gian: {m}:{s}</Text>
-  )
 }
 
 const ShowCheckBox = (props) => {

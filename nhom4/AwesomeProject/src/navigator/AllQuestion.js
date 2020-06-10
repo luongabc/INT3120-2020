@@ -15,7 +15,7 @@ import React, { Component } from 'react';
 import {Text, View,Image} from 'react-native';
 import { Container,Icon,Title,Tab,Tabs,ScrollableTab,Header, Button, Body, Content,ListItem, CheckBox} from 'native-base';
 import {FirebaseApp} from '../component/FirebaseConfig';
-
+import HeaderApp from '../component/HeaderApp';
 
 export default class AllQuestion extends Component {
   constructor(props) {
@@ -33,15 +33,7 @@ export default class AllQuestion extends Component {
     const { navigation } = this.props;
     return (
       <Container>
-        <Header style={{}}>
-          <Button onPress={() => { navigation.goBack() }
-          }>
-            <Icon name="menu" ></Icon>
-          </Button>
-          <Body style={{ paddingLeft: 20 }}>
-            <Title>Ôn tập câu hỏi</Title>
-          </Body>
-        </Header>
+        {HeaderApp(this.props.navigation,"Tất cả câu hỏi")}
         <Content style={{ margin:1 }}>
           <Tabs renderTabBar={() => <ScrollableTab />}>
             {this.state.data.map((question, i) => {

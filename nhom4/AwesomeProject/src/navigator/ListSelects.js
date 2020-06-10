@@ -4,7 +4,7 @@ import { Container, Header, Left, Body, Right, Button, Icon, Title, Content, Gri
 import AppStyle from '../them'
 import BoxSelect from '../component/BoxSelect';
 import { FirebaseApp } from '../component/FirebaseConfig';
-
+import HeaderApp from '../component/HeaderApp';
 export default class ListSelects extends Component {
   constructor(props) {
     super(props);
@@ -18,16 +18,7 @@ export default class ListSelects extends Component {
     const { navigation } = this.props;
     return (
       <Container>
-        <Header>
-          <Left>
-            <Button onPress={() => navigation.navigate("Course", { "namePage": namePage })}>
-              <Icon name='menu' ></Icon>
-            </Button>
-          </Left>
-          <Body>
-            <Title>Ôn thi giấy phép {namePage}</Title>
-          </Body>
-        </Header>
+        {HeaderApp(this.props.navigation,this.props.route.params.namePage)}
         <Content style={{ padding: 5 }}>
           <Grid>
             <Row>
@@ -38,8 +29,11 @@ export default class ListSelects extends Component {
                     for(var key in snapshot.val()){
                       if(snapshot.val()[key].Categoris===namePage) arr.push(snapshot.val()[key]);
                     }
-                    let random=Math.floor(Math.random() * arr.length);
-                    navigation.navigate("Test", { "namePage": "Đề ngẫu nhiên", "data": arr[random] })
+                    if(arr.length==0) alert("Không có đề thi");
+                    else {
+                      let random=Math.floor(Math.random() * arr.length);
+                      navigation.navigate("Test", { "namePage": "Đề ngẫu nhiên", "data": arr[random] })
+                    }
                   });
                 }}>
                 <BoxSelect srcImage={require('../asset/Layer1.png')} text={"Đề ngẫu nhiên"}  />

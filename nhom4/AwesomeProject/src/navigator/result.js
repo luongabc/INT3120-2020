@@ -3,24 +3,17 @@ import {
   Text, View,Image
 } from 'react-native';
 import { Container, Header, Tab, Tabs, ScrollableTab, Button, Body, Icon, Title, Content, ListItem, CheckBox } from 'native-base';
+import HeaderApp from '../component/HeaderApp';
+
 export default class Result extends Component {
   constructor(props) {
     super(props);
   }
   render() {
-    const { namePage } = this.props.route.params;
-    const { navigation } = this.props;
     const { data } = this.props.route.params;
     return (
       <Container>
-        <Header >
-          <Button onPress={() => { navigation.goBack() }}>
-            <Icon name='menu'></Icon>
-          </Button>
-          <Body style={{ paddingLeft: 20 }}>
-            <Title>{namePage}</Title>
-          </Body>
-        </Header>
+        {HeaderApp(this.props.navigation,this.props.route.params.namePage)}
         <Content style={{ marginTop: 1 }}>
           <Header style={{ height: 30 }}>
             <Body>

@@ -19,19 +19,9 @@ export default class TrafficSigns extends Component {
         });
     }
     render() {
-        const { navigation } = this.props;
         return (
             <Container>
-                <Header >
-                    <Left>
-                        <Button onPress={() => navigation.goBack()}>
-                            <Icon name='menu' ></Icon>
-                        </Button>
-                    </Left>
-                    <Body>
-                        <Title>Biển báo giao thông </Title>
-                    </Body>
-                </Header>
+                {HeaderApp(this.props.navigation,"Danh sách biển báo")}
                 {this.ShowTrafficSigns()}
             </Container>
         );
