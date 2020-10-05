@@ -6,4 +6,3 @@ ___
   3. Nguyến Đình Khải 
 ___
 # Ứng dụng: Ôn thi giấy phép lái xe GPLX
-link:https://play.google.com/store/apps/details?id=com.waterfall.trafficlaws2
